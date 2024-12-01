@@ -23,11 +23,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// 门的静态网格组件
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UStaticMeshComponent* DoorMesh;
-
-	// 触发范围
+	UStaticMeshComponent* TestMesh;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	class UBoxComponent* TriggerBox;
 
@@ -37,6 +36,7 @@ public:
 	TSubclassOf<UUserWidget> InteractionButtonWidgetClass;
 
 	// 显示的 UI 按钮
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	UUserWidget* InteractionButtonWidget;
 
 	UFUNCTION()

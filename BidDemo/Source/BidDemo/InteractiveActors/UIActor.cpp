@@ -16,8 +16,8 @@ AUIActor::AUIActor()
 	PrimaryActorTick.bCanEverTick = true;
 
 	// 创建网格组件
-	DoorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorMesh"));
-	RootComponent = DoorMesh;
+    TestMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TestMesh"));
+	RootComponent = TestMesh;
 
 	// 创建触发范围
 	TriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("TriggerBox"));
@@ -27,7 +27,31 @@ AUIActor::AUIActor()
 	// 绑定事件
 	TriggerBox->OnComponentBeginOverlap.AddDynamic(this, &AUIActor::OnOverlapBegin);
 	TriggerBox->OnComponentEndOverlap.AddDynamic(this, &AUIActor::OnOverlapEnd);
+
+    UStaticMesh* StaticMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/StarterContent/Shapes/Shape_Sphere"));
+    if (StaticMesh)
+    {
+        TestMesh->SetStaticMesh(StaticMesh);
+    }
+    // UMaterialInstance* CorrectCubeMaterialInstance = LoadObject<UMaterialInstance>(nullptr, TEXT("/Game/StarterContent/Shapes/Shape_Sphere"));
+    // UMaterial* CorrectCubeMaterial = LoadObject<UMaterial>(nullptr, TEXT("/Game/StarterContent/Materials/M_Basic_Floor"));
+    // UMaterial* CorrectCubeMaterial = FindObject<UMaterial>(nullptr, TEXT("/Game/StarterContent/Materials/M_Basic_Floor"));
+    // UMaterial* CorrectCubeMaterial = FindObject<UMaterial>(nullptr, TEXT("/Game/StarterContent/Materials/M_Basic_Floor"));
+    UMaterial* CorrectCubeMaterial = LoadObject<UMaterial>(nullptr, TEXT("/Game/NewMaterial"));
+
+    if (CorrectCubeMaterial)
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, "Hello");
+        TestMesh->SetMaterial(0, CorrectCubeMaterial);
+    }
+    else
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, "Fail");
+    }
+    // StaticLoadObject
+    // FindObject
 }
+       
 
 // Called when the game starts or when spawned
 void AUIActor::BeginPlay()
@@ -53,15 +77,16 @@ void AUIActor::BeginPlay()
     if (InteractionButtonWidgetClass)
     {
         // 创建按钮 Widget
+        // 也可以直接传进控件BP进InteractionButtonWidget，也可以直接根据蓝图路径代码创建Widget，再通过反射的方法FindByName，这样就不用传进类再创建了
         InteractionButtonWidget = CreateWidget<UUserWidget>(GetWorld(), InteractionButtonWidgetClass);
 
         if (InteractionButtonWidget)
         {
             // 将 Widget 添加到视口
-            InteractionButtonWidget->AddToViewport();
+            // InteractionButtonWidget->AddToViewport();
 
             // 初始隐藏按钮
-            InteractionButtonWidget->SetVisibility(ESlateVisibility::Hidden);
+            // InteractionButtonWidget->SetVisibility(ESlateVisibility::Hidden);
 
             // 获取按钮组件并绑定事件
             UButton* InteractionButton = Cast<UButton>(InteractionButtonWidget->GetWidgetFromName(TEXT("InteractionButton")));
@@ -93,13 +118,21 @@ void AUIActor::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* 
     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
     
-    InteractionButtonWidget->SetVisibility(ESlateVisibility::Visible);
+    // InteractionButtonWidget->SetVisibility(ESlateVisibility::Visible);
+    if (InteractionButtonWidget)
+    {
+        InteractionButtonWidget->AddToViewport();
+    }
 }
 
 // 离开范围
 void AUIActor::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-    InteractionButtonWidget->SetVisibility(ESlateVisibility::Hidden);
-
+    // InteractionButtonWidget->SetVisibility(ESlateVisibility::Hidden);
+    if (InteractionButtonWidget)
+    {
+        InteractionButtonWidget->RemoveFromParent();
+    }
+    
 }

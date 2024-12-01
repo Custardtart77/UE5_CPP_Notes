@@ -89,11 +89,19 @@ void ACubeBlock::OnInteractionButtonClicked()
         {
             OnRotationEvent.Execute(); // ´¥·¢Î¯ÍÐ
         }
+        CubeMesh->SetMaterial(0, CorrectCubeMaterial);
     }
     else
     {
         bIsCorrectlyRotated = false;
     }
+
+    static ConstructorHelpers::FObjectFinder<UMaterialInstance> CubeVisualAsset(TEXT("/Game/StarterContent/Shapes/ASSA"));
+    if (CubeVisualAsset.Succeeded())
+    {
+        CorrectCubeMaterial = CubeVisualAsset.Object;
+    }
+    CubeMesh->SetMaterial(0, CorrectCubeMaterial);
 }
 
 

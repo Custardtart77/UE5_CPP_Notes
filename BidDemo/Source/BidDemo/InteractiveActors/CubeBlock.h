@@ -45,8 +45,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TSubclassOf<UUserWidget> InteractionButtonWidgetClass;
 
-	// 显示的 UI 按钮
+	// 显示的 UI 按钮，不加UPROPERTY可能会被异常回收
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	UUserWidget* InteractionButtonWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	UMaterialInstance* CorrectCubeMaterial;
 
 	UFUNCTION()
 	void OnInteractionButtonClicked();
