@@ -37,6 +37,7 @@ AUIActor::AUIActor()
     // UMaterial* CorrectCubeMaterial = LoadObject<UMaterial>(nullptr, TEXT("/Game/StarterContent/Materials/M_Basic_Floor"));
     // UMaterial* CorrectCubeMaterial = FindObject<UMaterial>(nullptr, TEXT("/Game/StarterContent/Materials/M_Basic_Floor"));
     // UMaterial* CorrectCubeMaterial = FindObject<UMaterial>(nullptr, TEXT("/Game/StarterContent/Materials/M_Basic_Floor"));
+    /*
     UMaterial* CorrectCubeMaterial = LoadObject<UMaterial>(nullptr, TEXT("/Game/NewMaterial"));
 
     if (CorrectCubeMaterial)
@@ -47,7 +48,7 @@ AUIActor::AUIActor()
     else
     {
         GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, "Fail");
-    }
+    }*/
     // StaticLoadObject
     // FindObject
 }
